@@ -7,7 +7,6 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -31,12 +30,15 @@ class AuthController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], Response::HTTP_CREATED);
+            'result' => [
+                'message' => 'User Created',
+                'token' => $token,
+                'user' => new UserResource($user)
+            ]
+        ]);
     }
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         if(!Auth::attempt($request->only(['email', 'password']))){
             return response()->json([
@@ -49,7 +51,7 @@ class AuthController extends Controller
         return response()->json([
             'result' => [
                 'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'token' => $user->createToken("authToken")->plainTextToken,
                 'user' => new UserResource($user)
             ]
         ]);
