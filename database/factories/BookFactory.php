@@ -28,7 +28,6 @@ class BookFactory extends Factory
             'slug' => Str::slug($title),
             'genre_id' => $genre->id,
             'author_id' => $author->id,
-            'published_year' => fake()->year($max = 'now')
         ];
     }
 }

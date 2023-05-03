@@ -11,6 +11,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title','author_id','genre_id'];
+
     /**
      * Interact with the book's slug.
      *
