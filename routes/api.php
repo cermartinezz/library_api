@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookCopyController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function (){
+    Route::resource('/books', BookController::class);
+    Route::post('/books/{book}/copy', [BookCopyController::class,'store']);
+    Route::post('/checkout/{copy}', [CheckoutController::class,'store']);
 });
 
 Route::post('register', [AuthController::class,'register']);
 Route::post('login', [AuthController::class,'login']);
 
-Route::resource('/books', BookController::class);
-Route::post('/books/{book}/copy', [BookCopyController::class,'store']);

@@ -13,9 +13,9 @@ class BookController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return BookCollection
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $books = Book::with('author','genre')
             ->withCount('copies')
