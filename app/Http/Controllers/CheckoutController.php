@@ -31,6 +31,6 @@ class CheckoutController extends ApiController
 
         $checkout = CheckoutService::create($copy, $data['days']);
 
-        return $this->respondCreated('The book has been rent', ['checkout' => $checkout]);
+        return $this->respondCreated('The book has been successfully rented', ['checkout' => $checkout]);
     }
 }

@@ -17,8 +17,8 @@ class BookController extends ApiController
      */
     public function index(): JsonResponse
     {
-        $books = Book::with('author','genre')
-            ->withCount('copies')
+        $books = Book::with(['author','genre','copies','rentedCopies'])
+            ->withCount(['rentedCopies','copies'])
             ->get();
 
         return $this->respondSuccess('List of books',[
@@ -38,7 +38,7 @@ class BookController extends ApiController
 
         $book = Book::query()->create($book_data);
 
-        $book->load(['author','genre','copies'])->loadCount('copies');
+        $book->load(['author','genre'])->loadCount(['rentedCopies','copies']);
 
         return $this->respondCreated('Book created',['book' => new BookResource($book)]);
     }
@@ -51,7 +51,7 @@ class BookController extends ApiController
      */
     public function show(Book $book): JsonResponse
     {
-        $book->load(['copies','author','genre'])->loadCount('copies');
+        $book->load(['author','genre','copies','rentedCopies'])->loadCount(['rentedCopies','copies']);
 
         $book = new BookResource($book);
 
