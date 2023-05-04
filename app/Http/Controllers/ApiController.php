@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Response;
 
 class ApiController extends Controller
 {
-    protected $statusCode = 200;
+    protected $status_code = 200;
 
     public function respondCreated($message = "Record Created Successfully", $data = null)
     {
@@ -36,12 +36,13 @@ class ApiController extends Controller
             ]);
     }
 
-    public function respondNotFound($message = 'Not Found'){
+    public function respondNotFound($message = 'Not Found'): \Illuminate\Http\JsonResponse
+    {
         return $this->setStatusCode(StatusResponse::HTTP_NOT_FOUND)
             ->respondWithError($message);
     }
 
-    public function respondWithErrorValidation(String $message, array $fields)
+    public function respondWithErrorValidation(String $message, array $fields): \Illuminate\Http\JsonResponse
     {
         return $this->setStatusCode(StatusResponse::HTTP_UNPROCESSABLE_ENTITY)
             ->respond([
@@ -52,7 +53,8 @@ class ApiController extends Controller
             ]);
     }
 
-    public function respondFailAuthentication($message = "Incorrect Credentials"){
+    public function respondFailAuthentication($message = "Incorrect Credentials"): \Illuminate\Http\JsonResponse
+    {
         return $this->setStatusCode(StatusResponse::HTTP_UNAUTHORIZED)->respond([
             'result' => [
                 'message' => $message,
@@ -60,7 +62,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondInternalError($message = "There was an internal problem"){
+    public function respondInternalError($message = "There was an internal problem"): \Illuminate\Http\JsonResponse
+    {
         return $this->setStatusCode(StatusResponse::HTTP_INTERNAL_SERVER_ERROR)->respond([
             'result' => [
                 'message' => $message,
@@ -68,7 +71,8 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondBadRequest($message){
+    public function respondBadRequest($message): \Illuminate\Http\JsonResponse
+    {
         return $this->setStatusCode(StatusResponse::HTTP_BAD_REQUEST)->respond([
             'result' => [
                 'message' => $message,
@@ -76,7 +80,7 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respondWithError($message)
+    public function respondWithError($message): \Illuminate\Http\JsonResponse
     {
         return $this->respond([
             'result' => [
@@ -88,19 +92,19 @@ class ApiController extends Controller
         ]);
     }
 
-    public function respond($data,$headers = [])
+    public function respond($data,$headers = []): \Illuminate\Http\JsonResponse
     {
         return Response::json($data,$this->getStatusCode(),$headers);
     }
 
     public function getStatusCode(): int
     {
-        return $this->statusCode;
+        return $this->status_code;
     }
 
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $status_code): static
     {
-        $this->statusCode = $statusCode;
+        $this->status_code = $status_code;
 
         return $this;
     }
