@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function isLibrarian(): bool
+    {
+        return $this->role_id == Role::LIBRARIAN;
+    }
 }

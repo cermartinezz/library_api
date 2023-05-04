@@ -21,11 +21,11 @@ class CheckoutController extends ApiController
     {
         $data = $request->validated();
 
-        $copy_is_available = !Checkout::query()
+        $copy_is_available = ! Checkout::query()
             ->where('book_copy_id',$copy->id)
             ->where('returned',0)->exists();
 
-        if(!$copy_is_available){
+        if(! $copy_is_available){
             return $this->respondBadRequest('The copy is already rented');
         }
 

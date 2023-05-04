@@ -11,6 +11,14 @@ use Illuminate\Http\JsonResponse;
 class BookController extends ApiController
 {
     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Book::class, 'book');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
