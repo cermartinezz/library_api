@@ -2,62 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
+use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 
-class BookController extends Controller
+class BookController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return BookCollection
      */
     public function index()
     {
-        //
+        $books = Book::with('author','genre')
+            ->withCount('copies')
+            ->get();
+
+        return $this->respondSuccess('List of books',[
+            'books' => new BookCollection($books)
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param BookRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(BookRequest $request): JsonResponse
     {
+        $book_data = $request->validated();
 
+        $book = Book::query()->create($book_data);
+
+        $book->load(['author','genre','copies'])->loadCount('copies');
+
+        return $this->respondCreated('Book created',['book' => new BookResource($book)]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Book $book
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Book $book): JsonResponse
     {
-        //
-    }
+        $book->load(['copies','author','genre'])->loadCount('copies');
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $book = new BookResource($book);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return $this->respondSuccess('Details of book',['book' => $book]);
     }
 }
