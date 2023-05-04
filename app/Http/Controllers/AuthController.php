@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     /**
      * @param RegisterRequest $request
@@ -29,13 +29,12 @@ class AuthController extends Controller
 
         $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json([
-            'result' => [
-                'message' => 'User Created',
-                'token' => $token,
-                'user' => new UserResource($user)
-            ]
-        ]);
+        $response = [
+            'token' => $token,
+            'user' => new UserResource($user)
+        ];
+
+        return $this->respondCreated('User Created',$response);
     }
 
     public function login(LoginRequest $request): JsonResponse
