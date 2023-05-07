@@ -7,6 +7,7 @@ use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BookController extends ApiController
 {
@@ -23,14 +24,21 @@ class BookController extends ApiController
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $query = Book::with(['author','genre','copies','rentedCopies'])
+        $all = $request->query('all') == 'true';
+
+
+        $query = Book::with(['author','genre','copies','rentedCopies','allCheckouts'])
             ->withCount(['rentedCopies','copies']);
 
-        $books = Book::query()->fromSub($query, 'count')
-            ->where('copies_count', '>', 0)
-            ->get();
+        if(!$all){
+            $query = Book::query()->fromSub($query, 'count')
+                ->where('copies_count', '>', 0);
+        }
+
+        $books = $query->get();
+
 
         return $this->respondSuccess('List of books',[
             'books' => new BookCollection($books)
@@ -62,7 +70,7 @@ class BookController extends ApiController
      */
     public function show(Book $book): JsonResponse
     {
-        $book->load(['author','genre','copies','rentedCopies'])->loadCount(['rentedCopies','copies']);
+        $book->load(['author','genre','copies','rentedCopies','allCheckouts'])->loadCount(['rentedCopies','copies']);
 
         $book = new BookResource($book);
 

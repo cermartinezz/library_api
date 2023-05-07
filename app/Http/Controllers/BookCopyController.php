@@ -13,7 +13,12 @@ class BookCopyController extends ApiController
 
     public function index(Request $request, Book $book)
     {
-        $book->load(['author','genre','copies.book','rentedCopies' => ['user','copy']])->loadCount(['rentedCopies','copies']);
+        $book->load(['author',
+            'genre',
+            'copies.book',
+            'allCheckouts' => ['user','copy'],
+            'rentedCopies' => ['user','copy']
+        ])->loadCount(['rentedCopies','copies']);
 
         return $this->respondSuccess('List copies', ['book' => new BookResource($book)]);
     }

@@ -24,6 +24,7 @@ class BookResource extends JsonResource
 
         $copies = $this->copies ?? [];
         $rented_copies = $this->rentedCopies ?? [];
+        $checkouts = $this->allCheckouts ?? [];
         $available_copies = $this->availableCopies($rented_copies,$copies);
 
         $author = $this->author ? [
@@ -43,6 +44,7 @@ class BookResource extends JsonResource
             'total_of_copies'           => $total_of_copies,
             'total_available_copies'    => $total_available_copies,
             'total_rented_copies'       => $total_rented_copies,
+            'checkouts'                 => $checkouts->toArray(),
             'available_copies'          => $available_copies->toArray(),
             'rented_copies'             => $rented_copies->toArray(),
             'author'                    => $author,

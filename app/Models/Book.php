@@ -43,6 +43,18 @@ class Book extends Model
         )->where('returned',0);
     }
 
+    public function allCheckouts(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Checkout::class,
+            BookCopy::class,
+            'book_id',
+            'book_copy_id',
+            'id',
+            'id'
+        );
+    }
+
     /**
      * Interact with the book's slug.
      *
