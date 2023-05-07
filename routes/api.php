@@ -26,10 +26,9 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/checkout/{copy}', [CheckoutController::class,'store']);
     Route::put('/checkout/{checkout}', [CheckoutController::class,'update']);
     Route::get('/user/checkouts', [CheckoutController::class,'index']);
+    Route::get('/authors', [AuthorController::class,'index']);
+    Route::get('/genres', [GenreController::class,'index']);
 });
-
-Route::get('/authors', [AuthorController::class,'index']);
-Route::get('/genres', [GenreController::class,'index']);
 
 Route::post('/auth/register', [AuthController::class,'register']);
 Route::post('/auth/login', [AuthController::class,'login']);
