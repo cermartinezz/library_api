@@ -37,6 +37,8 @@ class BookController extends ApiController
                 ->where('copies_count', '>', 0);
         }
 
+        $query->latest();
+
         $books = $query->get();
 
 
