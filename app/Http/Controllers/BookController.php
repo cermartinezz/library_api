@@ -25,8 +25,11 @@ class BookController extends ApiController
      */
     public function index(): JsonResponse
     {
-        $books = Book::with(['author','genre','copies','rentedCopies'])
-            ->withCount(['rentedCopies','copies'])
+        $query = Book::with(['author','genre','copies','rentedCopies'])
+            ->withCount(['rentedCopies','copies']);
+
+        $books = Book::query()->fromSub($query, 'count')
+            ->where('copies_count', '>', 0)
             ->get();
 
         return $this->respondSuccess('List of books',[

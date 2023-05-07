@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::resource('/books', BookController::class);
     Route::resource('/books/{book}/copies', BookCopyController::class);
     Route::post('/checkout/{copy}', [CheckoutController::class,'store']);
+    Route::put('/checkout/{checkout}', [CheckoutController::class,'update']);
+    Route::get('/user/checkouts', [CheckoutController::class,'index']);
 });
 
 Route::get('/authors', [AuthorController::class,'index']);
