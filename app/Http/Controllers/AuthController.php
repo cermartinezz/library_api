@@ -7,10 +7,15 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends ApiController
 {
+    public function index(Request $request): JsonResponse
+    {
+        return $this->respondSuccess('Success', ['user'=> new UserResource(request()->user())]);
+    }
     /**
      * @param RegisterRequest $request
      * @return JsonResponse

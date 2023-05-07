@@ -35,6 +35,7 @@ class BookResource extends JsonResource
             'name' => $this->genre->name,
         ] : [];
 
+
         return [
             'id'                        => $this->id,
             'title'                     => $this->title,
@@ -42,8 +43,8 @@ class BookResource extends JsonResource
             'total_of_copies'           => $total_of_copies,
             'total_available_copies'    => $total_available_copies,
             'total_rented_copies'       => $total_rented_copies,
-            'available_copies'          => $available_copies,
-            'rented_copies'             => $rented_copies,
+            'available_copies'          => $available_copies->toArray(),
+            'rented_copies'             => $rented_copies->toArray(),
             'author'                    => $author,
             'genre'                     => $genre
         ];

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +20,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->group(function (){
+    Route::get('/auth/user', [AuthController::class,'index']);
     Route::resource('/books', BookController::class);
-    Route::post('/books/{book}/copy', [BookCopyController::class,'store']);
+    Route::resource('/books/{book}/copies', BookCopyController::class);
     Route::post('/checkout/{copy}', [CheckoutController::class,'store']);
 });
 
-Route::post('register', [AuthController::class,'register']);
-Route::post('login', [AuthController::class,'login']);
+Route::get('/authors', [AuthorController::class,'index']);
+Route::get('/genres', [GenreController::class,'index']);
+
+Route::post('/auth/register', [AuthController::class,'register']);
+Route::post('/auth/login', [AuthController::class,'login']);
 

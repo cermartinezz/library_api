@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookCopyRequest;
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BookCopyController extends ApiController
 {
+
+    public function index(Request $request, Book $book)
+    {
+        $book->load(['author','genre','copies.book','rentedCopies' => ['user','copy']])->loadCount(['rentedCopies','copies']);
+
+        return $this->respondSuccess('List copies', ['book' => new BookResource($book)]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,4 +36,6 @@ class BookCopyController extends ApiController
 
         return $this->respondCreated('Copy created',['copy' => $copy]);
     }
+
+
 }

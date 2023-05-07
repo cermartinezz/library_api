@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Checkout extends Model
 {
@@ -16,4 +17,14 @@ class Checkout extends Model
         'user_id',
         'returned',
     ];
+
+    public function copy(): BelongsTo
+    {
+        return $this->belongsTo(BookCopy::class,'book_copy_id','id','checkouts');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id','id','checkouts');
+    }
 }
