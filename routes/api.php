@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/user/checkouts', [CheckoutController::class,'index']);
     Route::get('/authors', [AuthorController::class,'index']);
     Route::get('/genres', [GenreController::class,'index']);
+    Route::get('/roles', [RoleController::class,'index']);
     Route::resource('/users', UserController::class);
 });
 
