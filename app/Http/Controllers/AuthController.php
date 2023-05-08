@@ -16,31 +16,7 @@ class AuthController extends ApiController
     {
         return $this->respondSuccess('Success', ['user'=> new UserResource(request()->user())]);
     }
-    /**
-     * @param RegisterRequest $request
-     * @return JsonResponse
-     */
-    public function register(RegisterRequest $request): JsonResponse
-    {
-        $data = $request->validated();
 
-        $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'password' => $data['password'],
-            'role_id' => $data['role_id'],
-        ]);
-
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        $response = [
-            'token' => $token,
-            'user' => new UserResource($user)
-        ];
-
-        return $this->respondCreated('User Created',$response);
-    }
 
     public function login(LoginRequest $request): JsonResponse
     {
