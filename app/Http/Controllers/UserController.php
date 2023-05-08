@@ -24,7 +24,7 @@ class UserController extends ApiController
      */
     public function index(): JsonResponse
     {
-        $users = User::all();
+        $users = User::query()->orderByDesc('role_id')->get();
 
         return $this->respondSuccess('List User',['users' => new UserCollection($users)]);
     }
